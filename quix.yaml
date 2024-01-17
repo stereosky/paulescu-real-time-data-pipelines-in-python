@@ -69,7 +69,7 @@ deployments:
   - name: trade_to_ohlc
     application: trade_to_ohlc
     deploymentType: Service
-    version: 4daee405efb25c54e3a2c1e1819f96c30c7865e5
+    version: 4daee405efb25c54e3a2c1e1819f96c30c7865e6
     resources:
       cpu: 200
       memory: 500
@@ -89,7 +89,7 @@ deployments:
   - name: ohlc_to_feature_store
     application: ohlc_to_feature_store
     deploymentType: Service
-    version: 4daee405efb25c54e3a2c1e1819f96c30c7865e5
+    version: 4daee405efb25c54e3a2c1e1819f96c30c7865e7
     resources:
       cpu: 200
       memory: 500
