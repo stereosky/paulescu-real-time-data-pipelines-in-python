@@ -39,7 +39,7 @@ deployments:
   - name: demo_producer 2
     application: demo_producer
     deploymentType: Service
-    version: 94f9d7e8f7e98c6d4fbc7411aad287b967fc525c
+    version: 94f9d7e8f7e98c6d4fbc7411aad287b967fc525d
     resources:
       cpu: 200
       memory: 500
