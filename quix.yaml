@@ -6,10 +6,10 @@ metadata:
 
 # This section describes the Deployments of the data pipeline
 deployments:
-  - name: demo_producer 4
-    application: demo_producer
+  - name: trade_producer
+    application: trade_producer
     deploymentType: Service
-    version: e94ec4edcc02f97e1ebe89fd71d5a6e36045ecc1
+    version: 8ed312eb6f32b358f83512b9965aa85f5aa9869d
     resources:
       cpu: 200
       memory: 500
@@ -50,17 +50,22 @@ deployments:
         inputType: OutputTopic
         description: This is the output topic to write data to
         required: true
-        value: new_topic_test
-  - name: trade_producer
-    application: trade_producer
+        value: trades_topic
+  - name: trade_to_ohlc
+    application: trade_to_ohlc
     deploymentType: Service
     version: 4daee405efb25c54e3a2c1e1819f96c30c7865e5
     resources:
       cpu: 200
       memory: 500
       replicas: 1
-    desiredStatus: Stopped
+    desiredStatus: Running
     variables:
+      - name: input
+        inputType: InputTopic
+        description: This is the input topic to read data from
+        required: true
+        value: trades_topic
       - name: output
         inputType: OutputTopic
         description: This is the output topic to write data to
@@ -74,7 +79,7 @@ deployments:
       cpu: 200
       memory: 500
       replicas: 1
-    desiredStatus: Stopped
+    desiredStatus: Running
     variables:
       - name: input
         inputType: InputTopic
@@ -121,39 +126,53 @@ deployments:
       replicas: 1
     desiredStatus: Stopped
     variables:
-      - name: output
-        inputType: OutputTopic
-        description: This is the output topic to write data to
+      - name: HOPSWORKS_PROJECT_NAME
+        inputType: Secret
+        description: ''
         required: true
-        value: trade_events
+        secretKey: HOPSWORKS_PROJECT_NAME
+      - name: HOPSWORKS_API_KEY
+        inputType: Secret
+        description: ''
+        required: true
+        secretKey: HOPSWORKS_API_KEY
+  - name: streamlit-app 2
+    application: dashboard
+    deploymentType: Service
+    version: 23327f7e96b2d31731c5f36f53dc820bdf2da87c
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    publicAccess:
+      enabled: true
+      urlPrefix: streamlit
+    desiredStatus: Running
+    variables:
+      - name: HOPSWORKS_PROJECT_NAME
+        inputType: Secret
+        description: ''
+        required: true
+        secretKey: HOPSWORKS_PROJECT_NAME
+      - name: HOPSWORKS_API_KEY
+        inputType: Secret
+        description: ''
+        required: true
+        secretKey: HOPSWORKS_API_KEY
 
 # This section describes the Topics of the data pipeline
 topics:
-  - name: trade_events
+  - name: trades_topic
     persisted: false
     configuration:
       partitions: 1
       replicationFactor: 2
       retentionInMinutes: 1440
       retentionInBytes: 52428800
-  - name: ohlc_events
-    persisted: false
-    configuration:
-      partitions: 2
-      replicationFactor: 2
-      retentionInMinutes: 10080
-      retentionInBytes: 52428800
-  - name: qts__trade_events
+  - name: ohlc_topic
     persisted: false
     configuration:
       partitions: 1
       replicationFactor: 2
       retentionInMinutes: 1440
-      retentionInBytes: 52428800
-  - name: new_topic_test
-    persisted: false
-    configuration:
-      partitions: 2
-      replicationFactor: 2
-      retentionInMinutes: 10080
       retentionInBytes: 52428800
