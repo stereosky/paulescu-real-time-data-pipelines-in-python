@@ -1,11 +1,6 @@
-name: ohlc_to_feature_store
+name: streamlit-app
 language: python
 variables:
-  - name: input
-    inputType: InputTopic
-    description: This is the input topic to read data from
-    defaultValue: ohlc_topic
-    required: true
   - name: HOPSWORKS_PROJECT_NAME
     inputType: Secret
     description: ''
