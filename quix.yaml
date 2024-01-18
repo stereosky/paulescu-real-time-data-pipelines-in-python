@@ -14,37 +14,7 @@ deployments:
       cpu: 200
       memory: 500
       replicas: 1
-    desiredStatus: Stopped
-    variables:
-      - name: output
-        inputType: OutputTopic
-        description: This is the output topic to write data to
-        required: true
-        value: new_topic_test
-  - name: demo_producer
-    application: demo_producer
-    deploymentType: Service
-    version: 94f9d7e8f7e98c6d4fbc7411aad287b967fc525c
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Stopped
-    variables:
-      - name: output
-        inputType: OutputTopic
-        description: This is the output topic to write data to
-        required: true
-        value: new_topic_test
-  - name: demo_producer 2
-    application: demo_producer
-    deploymentType: Service
-    version: 94f9d7e8f7e98c6d4fbc7411aad287b967fc525d
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Stopped
+    desiredStatus: Running
     variables:
       - name: output
         inputType: OutputTopic
@@ -54,7 +24,7 @@ deployments:
   - name: trade_to_ohlc
     application: trade_to_ohlc
     deploymentType: Service
-    version: 4daee405efb25c54e3a2c1e1819f96c30c7865e5
+    version: 39a63bf38e49b1f2ce96b621d6ce33a68e0d1281
     resources:
       cpu: 200
       memory: 500
@@ -70,42 +40,22 @@ deployments:
         inputType: OutputTopic
         description: This is the output topic to write data to
         required: true
-        value: trade_events
-  - name: trade_to_ohlc
-    application: trade_to_ohlc
-    deploymentType: Service
-    version: 4daee405efb25c54e3a2c1e1819f96c30c7865e5
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    desiredStatus: Running
-    variables:
-      - name: input
-        inputType: InputTopic
-        description: This is the input topic to read data from
-        required: true
-        value: trade_events
-      - name: output
-        inputType: OutputTopic
-        description: This is the output topic to write data to
-        required: true
-        value: ohlc_events
+        value: ohlc_topic
   - name: ohlc_to_feature_store
     application: ohlc_to_feature_store
     deploymentType: Service
-    version: 4daee405efb25c54e3a2c1e1819f96c30c7865e5
+    version: f4e6564a0cf6912306bf2acdbae3de253980aac5
     resources:
       cpu: 200
       memory: 500
       replicas: 1
-    desiredStatus: Stopped
+    desiredStatus: Running
     variables:
       - name: input
         inputType: InputTopic
         description: This is the input topic to read data from
         required: true
-        value: ohlc_events
+        value: ohlc_topic
       - name: HOPSWORKS_PROJECT_NAME
         inputType: Secret
         description: ''
@@ -116,15 +66,18 @@ deployments:
         description: ''
         required: true
         secretKey: HOPSWORKS_API_KEY
-  - name: trade_producer 2
-    application: trade_producer
+  - name: streamlit-app
+    application: dashboard
     deploymentType: Service
-    version: e024755d85e688651773c81875f8b96f9a9c2081
+    version: 74a66ae9a847d26a51585141b8aa32e1b2ebd3be
     resources:
       cpu: 200
       memory: 500
       replicas: 1
-    desiredStatus: Stopped
+    publicAccess:
+      enabled: true
+      urlPrefix: dashboard
+    desiredStatus: Running
     variables:
       - name: HOPSWORKS_PROJECT_NAME
         inputType: Secret
